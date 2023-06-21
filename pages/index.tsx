@@ -1,10 +1,8 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
-
-const inter = Inter({ subsets: ['latin'] });
-
+import EventList from '@/components/events/EventList';
+import { getFeaturedEvents } from '@/dummy-data';
 export default function Home() {
+  const filteredevents = getFeaturedEvents();
   return (
     <>
       <Head>
@@ -14,6 +12,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1>This is the home page of the app</h1>
+      <EventList events={filteredevents} />
     </>
   );
 }
