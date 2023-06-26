@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import EventList from '@/components/events/EventList';
-import { getFeaturedEvents } from '@/dummy-data';
-export default function Home() {
-  const filteredevents = getFeaturedEvents();
+import { getFeaturedEvents } from '@/helpers/api-util';
+import { DummyData } from '@/dummy-data';
+const Home = (props: { events: DummyData[] }) => {
   return (
     <>
       <Head>
@@ -11,7 +11,18 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <EventList events={filteredevents} />
+      <EventList events={props.events} />
     </>
   );
-}
+};
+
+export const getStaticProps = async () => {
+  const events = await getFeaturedEvents();
+  return {
+    props: {
+      events: events,
+    },
+    revalidate: 1800,
+  };
+};
+export default Home;

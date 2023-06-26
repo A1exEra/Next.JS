@@ -1,22 +1,22 @@
-import { useRouter } from 'next/router';
-import { getEventById } from '@/dummy-data';
+import {
+  getEventById,
+  getAllEvents,
+  getFeaturedEvents,
+} from '@/helpers/api-util';
 import EventSummary from '../../components/event-detail/event-summary';
 import EventLogistics from '../../components/event-detail/event-logistics';
 import EventContent from '../../components/event-detail/event-content';
 import Button from '@/components/ui/Button';
 import ErrorAlert from '@/components/ui/ErrorAlert';
-const EventDetailPage = () => {
-  const router = useRouter();
-  console.log(router.query.eventId);
-  const eventId = router.query.eventId as string;
-  const event = getEventById(eventId);
-  //   console.log(event);
+import { DummyData } from '@/dummy-data';
+const EventDetailPage = (props: { event: DummyData }) => {
+  const event = props.event;
   if (!event) {
     return (
       <>
-        <ErrorAlert>
-          <p>Invalid values...</p>
-        </ErrorAlert>
+        <div className="center">
+          <p>Loading...</p>
+        </div>
         <div className="center">
           <Button link="/events">Show All Events</Button>
         </div>
@@ -32,5 +32,23 @@ const EventDetailPage = () => {
       </EventContent>
     </>
   );
+};
+export const getStaticProps = async (ctx: any) => {
+  const eventId = ctx.params.eventId;
+  const event = await getEventById(eventId);
+  return {
+    props: { event: event },
+    revalidate: 60, //seconds
+  };
+};
+export const getStaticPaths = async () => {
+  // const events = await getAllEvents();
+  const events = await getFeaturedEvents();
+  const paths = events.map((event) => ({ params: { eventId: event.id } }));
+  console.log(paths);
+  return {
+    paths: paths,
+    fallback: 'blocking',
+  };
 };
 export default EventDetailPage;
