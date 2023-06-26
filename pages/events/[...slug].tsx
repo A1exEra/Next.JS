@@ -1,15 +1,16 @@
-import { useRouter } from 'next/router';
-import { getFilteredEvents } from '@/helpers/api-util';
-import EventList from '@/components/events/EventList';
-import ResultsTitle from '@/components/events/ResultsTitle';
-import Button from '@/components/ui/Button';
-import ErrorAlert from '@/components/ui/ErrorAlert';
-import { DummyData } from '@/dummy-data';
-import { useEffect, useState } from 'react';
-import useSWR from 'swr';
+import { useRouter } from "next/router";
+import { getFilteredEvents } from "@/helpers/api-util";
+import EventList from "@/components/events/EventList";
+import ResultsTitle from "@/components/events/ResultsTitle";
+import Button from "@/components/ui/Button";
+import ErrorAlert from "@/components/ui/ErrorAlert";
+import { DummyData } from "@/dummy-data";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+import Head from "next/head";
 
 const URL =
-  'https://nextjs-client-side-db43a-default-rtdb.europe-west1.firebasedatabase.app/events.json';
+  "https://nextjs-client-side-db43a-default-rtdb.europe-west1.firebasedatabase.app/events.json";
 // const FilteredEventsPage = (props: any) => {
 //   const router = useRouter();
 //   const [events, setEvents] = useState<DummyData[] | null>(null);
@@ -88,9 +89,18 @@ const FilteredEventsPage = (props: any) => {
   const { year, month } = props.date;
   const date = new Date(year, month - 1);
   const filteredevents = props.events;
+  const pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta name="description" content={`Events for: ${year}/${month}.`} />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="icon" href="/favicon.ico" />
+    </Head>
+  );
   if (props.hasError) {
     return (
       <>
+        {pageHeadData}
         <ErrorAlert>
           <p>Invalid values...</p>
         </ErrorAlert>
@@ -103,6 +113,7 @@ const FilteredEventsPage = (props: any) => {
   if (!filteredevents || filteredevents.length === 0) {
     return (
       <>
+        {pageHeadData}
         <ErrorAlert>
           <p>No events for the chosen filter...</p>
         </ErrorAlert>
@@ -114,6 +125,7 @@ const FilteredEventsPage = (props: any) => {
   }
   return (
     <>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList events={filteredevents} />
     </>
@@ -126,7 +138,6 @@ export const getServerSideProps = async (ctx: any) => {
   const year = +filteredData[0];
   const month = +filteredData[1];
   const filteredevents = await getFilteredEvents({ year: year, month: month });
-  console.log(filteredevents, year, month);
   if (
     isNaN(year) ||
     isNaN(month) ||

@@ -1,6 +1,6 @@
-import { DummyData } from '@/dummy-data';
+import { DummyData } from "@/dummy-data";
 const URL =
-  'https://nextjs-client-side-db43a-default-rtdb.europe-west1.firebasedatabase.app/events.json';
+  "https://nextjs-client-side-db43a-default-rtdb.europe-west1.firebasedatabase.app/events.json";
 export const getAllEvents = async () => {
   const response = await fetch(URL);
   const data = await response.json();
@@ -20,7 +20,6 @@ export const getAllEvents = async () => {
 };
 export const getFeaturedEvents = async () => {
   const allEvents = await getAllEvents();
-  console.log(allEvents);
   return allEvents.filter((event) => event.isFeatured);
 };
 export const getEventById = async (id: string) => {
