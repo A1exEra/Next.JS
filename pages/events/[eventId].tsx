@@ -2,14 +2,15 @@ import {
   getEventById,
   getAllEvents,
   getFeaturedEvents,
-} from "@/helpers/api-util";
-import EventSummary from "../../components/event-detail/event-summary";
-import EventLogistics from "../../components/event-detail/event-logistics";
-import EventContent from "../../components/event-detail/event-content";
-import Button from "@/components/ui/Button";
-import ErrorAlert from "@/components/ui/ErrorAlert";
-import { DummyData } from "@/dummy-data";
-import Head from "next/head";
+} from '@/helpers/api-util';
+import EventSummary from '../../components/event-detail/event-summary';
+import EventLogistics from '../../components/event-detail/event-logistics';
+import EventContent from '../../components/event-detail/event-content';
+import Button from '@/components/ui/Button';
+import ErrorAlert from '@/components/ui/ErrorAlert';
+import { DummyData } from '@/dummy-data';
+import Head from 'next/head';
+import Comments from '../../components/input/comments';
 const EventDetailPage = (props: { event: DummyData }) => {
   const event = props.event;
   if (!event) {
@@ -37,6 +38,7 @@ const EventDetailPage = (props: { event: DummyData }) => {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
+      <Comments eventId={event.id} />
     </>
   );
 };
@@ -49,12 +51,11 @@ export const getStaticProps = async (ctx: any) => {
   };
 };
 export const getStaticPaths = async () => {
-  // const events = await getAllEvents();
   const events = await getFeaturedEvents();
   const paths = events.map((event) => ({ params: { eventId: event.id } }));
   return {
     paths: paths,
-    fallback: "blocking",
+    fallback: 'blocking',
   };
 };
 export default EventDetailPage;

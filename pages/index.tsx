@@ -1,7 +1,8 @@
-import Head from "next/head";
-import EventList from "@/components/events/EventList";
-import { getFeaturedEvents } from "@/helpers/api-util";
-import { DummyData } from "@/dummy-data";
+import Head from 'next/head';
+import EventList from '@/components/events/EventList';
+import { getFeaturedEvents } from '@/helpers/api-util';
+import { DummyData } from '@/dummy-data';
+import NewsletterRegistration from '../components/input/newsletter-registration';
 const Home = (props: { events: DummyData[] }) => {
   return (
     <>
@@ -11,6 +12,7 @@ const Home = (props: { events: DummyData[] }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <NewsletterRegistration />
       <EventList events={props.events} />
     </>
   );
