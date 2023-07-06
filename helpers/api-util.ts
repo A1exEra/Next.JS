@@ -1,6 +1,8 @@
-import { DummyData } from "@/dummy-data";
+import { DummyData } from '@/dummy-data';
+import fs from 'fs';
+import path from 'path';
 const URL =
-  "https://nextjs-client-side-db43a-default-rtdb.europe-west1.firebasedatabase.app/events.json";
+  'https://nextjs-client-side-db43a-default-rtdb.europe-west1.firebasedatabase.app/events.json';
 export const getAllEvents = async () => {
   const response = await fetch(URL);
   const data = await response.json();
@@ -40,4 +42,12 @@ export const getFilteredEvents = async (dateFilter: {
   });
 
   return filteredEvents;
+};
+export const buildPath = (folder: string, folderName: string) => {
+  return path.join(process.cwd(), `${folder}`, `${folderName}.json`);
+};
+export const extractPath = (filePath: fs.PathOrFileDescriptor) => {
+  const fileData = fs.readFileSync(filePath) as string | any;
+  const data = JSON.parse(fileData);
+  return data;
 };
