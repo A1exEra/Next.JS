@@ -77,7 +77,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         message: 'Fetching data failed...',
         error: err.message,
       });
-      q;
     }
   }
   client.close();

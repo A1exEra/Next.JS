@@ -1,27 +1,21 @@
-import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactNode,
-  ReactPortal,
-  PromiseLikeOfReactNode,
-} from 'react';
+import { useContext, ReactNode } from 'react';
 import MainHeader from './MainHeader';
-const Layout = (props: {
-  children:
-    | string
-    | number
-    | boolean
-    | ReactElement<any, string | JSXElementConstructor<any>>
-    | Iterable<ReactNode>
-    | ReactPortal
-    | PromiseLikeOfReactNode
-    | null
-    | undefined;
-}) => {
+import Notification from '../ui/notification';
+import NotificationContext from '@/store/notification-context';
+const Layout = (props: { children: React.ReactNode }) => {
+  const notificationCtx = useContext(NotificationContext);
+  const activeNotification = notificationCtx.notification;
   return (
     <>
       <MainHeader />
       <main>{props.children}</main>
+      {activeNotification && (
+        <Notification
+          title={activeNotification.title}
+          message={activeNotification.message}
+          status={activeNotification.status}
+        />
+      )}
     </>
   );
 };
