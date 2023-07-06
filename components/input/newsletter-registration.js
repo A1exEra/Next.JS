@@ -24,7 +24,7 @@ function NewsletterRegistration() {
           title: 'Error',
           message:
             `${response.status} -- ${response.statusText}` ||
-            'SError sending to Database...',
+            'Error sending to Database...',
           status: 'error',
         });
         return;
